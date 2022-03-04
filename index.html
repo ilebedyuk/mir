@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html>
+<body>
+
+<h1>Пошук на сайті миротворець за списком</h1>
+<p>Введіть список імен через кому</p>
+
+
+<form>
+    <label for="fname">Список імен</label>
+    <input type="text" id="lname" name="lname"><br><br>
+    <input id="btn" type="button" value="Submit">
+</form>
+
+<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>
+<script>
+    var fullname = "Елисеев Алексей Михайлович"
+    var url = "https://myrotvorets.center/criminal/?cf%5Bname%5D=" + fullname + "&cf%5Bcountry%5D=&cf%5Baddress%5D=&cf%5Bphone%5D=&cf%5Bdesc%5D="
+    $(document).ready(function () {
+        $("#btn").click(function(){
+
+            $.ajax({
+                url: url,
+                type: "GET",
+                beforeSend: function(request) {
+                    request.setRequestHeader("Access-Control-Allow-Origin", "*");
+                    request.setRequestHeader("Access-Control-Allow-Methods", "GET, POST, OPTIONS");
+                },
+                dataType : "html",
+                crossDomain: false,
+                success: function (response) {
+                    var resp = JSON.parse(response)
+                    alert(resp.status);
+                },
+                error: function (xhr, status) {
+                    alert("error");
+                }
+            });
+        });
+    });
+</script>
+
+</body>
+</html>
