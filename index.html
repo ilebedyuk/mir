@@ -12,28 +12,45 @@
     <input id="btn" type="button" value="Submit">
 </form>
 
+<div id="text"></div>
+
 <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>
 <script>
-    var fullname = "Елисеев Алексей Михайлович"
+    var fullname = "Лебедюк Игорь Михайлович"
     var url = "https://myrotvorets.center/criminal/?cf%5Bname%5D=" + fullname + "&cf%5Bcountry%5D=&cf%5Baddress%5D=&cf%5Bphone%5D=&cf%5Bdesc%5D="
+
+
+    function get_array_names() {
+        var input = document.getElementById("lname").value;
+        var array = input.split(",").map(String);
+    }
+
     $(document).ready(function () {
-        $("#btn").click(function(){
+        $.ajaxSetup({cache: false});
+
+        $("#btn").click(function () {
 
             $.ajax({
                 url: url,
                 type: "GET",
-                beforeSend: function(request) {
+                beforeSend: function (request) {
                     request.setRequestHeader("Access-Control-Allow-Origin", "*");
-                    request.setRequestHeader("Access-Control-Allow-Methods", "GET, POST, OPTIONS");
+                    request.setRequestHeader("Access-Control-Allow-Methods", "GET, POST, PATCH, PUT, DELETE, OPTIONS");
+                    // request.setRequestHeader("Access-Control-Request-Headers", "x-requested-with");
+                    request.setRequestHeader("Accept", "*/*");
+                    request.setRequestHeader("Access-Control-Allow-Headers", "Origin, Content-Type, X-Auth-Token");
                 },
-                dataType : "html",
-                crossDomain: false,
+                dataType: "html",
+                // crossDomain: true,
+                data: {
+                    txtsearch: $('.not-found').val()
+                },
                 success: function (response) {
-                    var resp = JSON.parse(response)
-                    alert(resp.status);
+                    // var resp = JSON.parse(response)
+                    $("#text").text("success");
                 },
                 error: function (xhr, status) {
-                    alert("error");
+                    $("#text").text("error");
                 }
             });
         });
